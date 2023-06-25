@@ -1,5 +1,7 @@
-package com.example.demo;
+package com.example.demo.exceptions;
 
+import com.example.demo.User;
+import com.example.demo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -7,31 +9,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class RegistrationTestController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @GetMapping
     @ResponseBody
     public boolean createTestUser(){
 
-        User user = new User();
-        user.setLogin("Tomasz2");
+        try {
+            userService.registerUser("Tomasz", "TOmasz");
+        } catch (ValidationException e) {
 
-        user.setPassword(passwordEncoder.encode("Tomasz"));
+            List<String> validationErrors = e.getValidationErrors();
 
-        userRepository.save(user);
+            //model.setAttribute("validation", validationErrors);
 
-
-        User user2 = new User();
-        user2.setLogin("Tomasz");
-
-        user2.setPassword(passwordEncoder.encode("Tomasz"));
-        userRepository.save(user2);
+            // return widok;
+        }
         return true;
     }
 }
