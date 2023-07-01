@@ -19,7 +19,7 @@ public class SecSecurityConfig {
         );
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/test", "/logout").permitAll()
+                        .requestMatchers("/", "/home", "/test", "/logout", "/swagger-ui/*", "/v3/api-docs", "/v3/api-docs/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
