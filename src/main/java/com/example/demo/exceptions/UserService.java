@@ -3,6 +3,7 @@ package com.example.demo.exceptions;
 import com.example.demo.User;
 import com.example.demo.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,12 +16,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User registerUser(String login, String password) throws ValidationException {
 
         User user = new User();
         user.setLogin(login);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
 
         List<String> validationFailures = validate(user);
         if(validationFailures.isEmpty()){

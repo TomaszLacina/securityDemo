@@ -15,19 +15,21 @@ public class SecSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                // ... the rest of your authorization rules
+                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
         );
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/test").permitAll()
+                        .requestMatchers("/", "/home", "/test", "/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                 )
-                .logout((logout) -> logout.logoutUrl("/logout").permitAll());
+                .logout((logout) -> logout.logoutUrl("/logout").invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/login" + "?logout")
+                        .permitAll()); //TODO: popraw kiedys,  bo to nie działa
 
         return http.build();
     }

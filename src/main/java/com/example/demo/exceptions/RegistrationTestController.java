@@ -28,7 +28,7 @@ public class RegistrationTestController {
 
             List<String> validationErrors = e.getValidationErrors();
 
-            //model.setAttribute("validation", validationErrors);
+            // n1`model.setAttribute("validation", validationErrors);
 
             // return widok;
         }
